@@ -1,6 +1,7 @@
 package com.example.searchModule
 
 import android.util.Log
+import okio.ByteString
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,27 +16,25 @@ class MovieSearchService {
     }
 
 
-    fun movieSearch(id:String, pw:String, searchingText: String){
+    fun movieSearch(clientId:String, clientSecret:String, searchingText: ByteString){
         val retrofit = Retrofit.Builder().baseUrl("https://openapi.naver.com").addConverterFactory(
             GsonConverterFactory.create()).build()
 
         val movieSearchService = retrofit.create(MovieSearchInterface::class.java)
 
-        movieSearchService.getMovieInfo(id, pw, searchingText).enqueue(object : Callback<MovieSearchResponse>{
+        movieSearchService.getMovieInfo(clientId, clientSecret, searchingText).enqueue(object : Callback<MovieSearchResponse>{
             override fun onResponse(call: Call<MovieSearchResponse>, movieSearchResponse: Response<MovieSearchResponse>
             ) {
-                Log.d("전송",id)
                 Log.d("결과",movieSearchResponse.toString())
                 val response = movieSearchResponse.body()!!
                 when(response.code){
-                    400 -> movieSearchView.onMovieSearchFailure(response.code, response.message)
-                    500 -> movieSearchView.onMovieSearchFailure(response.code, response.message)
-                    else -> movieSearchView.onMovieSearchSuccess(response.message,response.result)
+                    200 -> movieSearchView.onMovieSearchSuccess(response.result)
+                    else -> movieSearchView.onMovieSearchFailure(response.code)
                 }
             }
 
             override fun onFailure(call: Call<MovieSearchResponse>, t: Throwable) {
-                movieSearchView.onMovieSearchFailure(400, "네트워크 에러")
+                movieSearchView.onMovieSearchFailure(400)
             }
 
         })

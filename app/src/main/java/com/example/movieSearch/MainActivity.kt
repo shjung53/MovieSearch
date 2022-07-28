@@ -1,12 +1,12 @@
 package com.example.movieSearch
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieSearch.databinding.ActivityMainBinding
-import com.example.searchModule.MovieInfo
 import com.example.searchModule.MovieSearchService
 import com.example.searchModule.MovieSearchView
+import com.example.searchModule.Result
+import okio.ByteString.Companion.encodeUtf8
 
 
 class MainActivity: AppCompatActivity(), MovieSearchView {
@@ -23,13 +23,12 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         movieSearchService = MovieSearchService()
         movieSearchService.setMovieSearchView(this)
 
-        val id = "SpMu3WQ4pQo_Kq4KAFcc"
-        val pw = "B91xzc8P0c"
+        val clientId = "r1v9bwMSFGBYScAlQe_r"
+        val clientSecret = "nRi7rDBBgB"
 
         binding.mainSearchBtn.setOnClickListener {
             val searchingText = binding.mainSearchEt.text.toString()
-            movieSearchService.movieSearch(id, pw, searchingText)
-            Log.d("전송",id)
+            movieSearchService.movieSearch(clientId, clientSecret, searchingText.encodeUtf8())
         }
 
         val movieRVAdapter = MovieRVAdapter(this)
@@ -38,11 +37,9 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 
     }
 
-    override fun onMovieSearchSuccess(message: String, result: ArrayList<MovieInfo>) {
-        Log.d("결과",result.toString())
+    override fun onMovieSearchSuccess(result: Result) {
     }
 
-    override fun onMovieSearchFailure(code: Int, message: String) {
-        Log.d("결과",code.toString())
+    override fun onMovieSearchFailure(code: Int) {
     }
 }
