@@ -1,4 +1,4 @@
-package com.example.moviesearch
+package com.example.movieSearch
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
