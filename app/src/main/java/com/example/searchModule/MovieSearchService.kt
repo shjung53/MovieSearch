@@ -24,13 +24,16 @@ class MovieSearchService {
 
         movieSearchService.getMovieInfo(clientId, clientSecret, searchingText).enqueue(object : Callback<MovieSearchResponse>{
             override fun onResponse(call: Call<MovieSearchResponse>, movieSearchResponse: Response<MovieSearchResponse>) {
-                Log.d("결과",movieSearchResponse.toString())
                 val response = movieSearchResponse.body()!!
                 Log.d("결과",response.toString())
+                when(movieSearchResponse.code()){
+                    200 -> movieSearchView.onMovieSearchSuccess(response)
+                    else -> movieSearchView.onMovieSearchFailure()
+                }
             }
 
             override fun onFailure(call: Call<MovieSearchResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+                movieSearchView.onMovieSearchFailure()
             }
         })
     }

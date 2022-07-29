@@ -5,7 +5,7 @@ data class MovieSearchResponse(
     var total: Int,
     var start: Int,
     var display: Int,
-    var items: ArrayList<MovieInfo>
+    var items: ArrayList<MovieInfo>?
 )
 data class MovieInfo(
     var title: String,
