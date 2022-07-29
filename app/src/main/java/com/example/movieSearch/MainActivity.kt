@@ -1,11 +1,13 @@
 package com.example.movieSearch
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieSearch.databinding.ActivityMainBinding
-import com.example.searchModule.MovieInfo
 import com.example.searchModule.MovieSearchResponse
 import com.example.searchModule.MovieSearchService
 import com.example.searchModule.MovieSearchView
@@ -41,6 +43,18 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         binding.mainMoviesRv.adapter = movieRVAdapter
         binding.mainMoviesRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        movieRVAdapter.setItemClickListener(object: MovieRVAdapter.ItemClickListener{
+            override fun clickMovie(holder: MovieRVAdapter.ViewHolder, position: Int) {
+                holder.binding.itemMovieCl.setOnClickListener {
+                    val url = movieRVAdapter.currentList[position].link
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                    Log.d("클릭",movieRVAdapter.currentList[position].link)
+                }
+            }
+
+        })
+
     }
 
     override fun onMovieSearchSuccess(result: MovieSearchResponse) {
@@ -55,4 +69,5 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
     override fun onMovieSearchFailure() {
         Toast.makeText(this, "오류가 발생했습니다 다시 시도해주세요",Toast.LENGTH_SHORT).show()
     }
+
 }

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!--    검색바-->
     <LinearLayout
         android:id="@+id/main_searchBar_ll"
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
+<!--        검색창-->
         <EditText
             android:id="@+id/main_search_et"
             android:layout_width="0dp"
@@ -20,6 +22,7 @@
             android:textColor="@color/black"
             android:backgroundTint="@color/teal_700"
             />
+<!--        검색 버튼-->
         <Button
             android:id="@+id/main_search_btn"
             android:layout_width="wrap_content"
@@ -28,6 +31,7 @@
             android:textSize="16sp"
             android:textColor="@color/black"
             />
+<!--        최근 검색 버튼-->
         <Button
             android:id="@+id/main_search_log_btn"
             android:layout_width="wrap_content"
@@ -37,6 +41,8 @@
             android:textColor="@color/black"
             />
     </LinearLayout>
+
+<!--    영화 검색결과 리사이클러뷰-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_movies_rv"
         android:layout_width="match_parent"
@@ -46,5 +52,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,21 @@ import com.bumptech.glide.Glide
 import com.example.movieSearch.databinding.ItemMovieBinding
 import com.example.searchModule.MovieInfo
 
+
 class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUtil) {
+
+    interface ItemClickListener{
+        fun clickMovie(holder: ViewHolder, position: Int)
+    }
+
+    private lateinit var itemClickListener: ItemClickListener
+
+    fun setItemClickListener(pItemClickListener: ItemClickListener){
+        itemClickListener = pItemClickListener
+    }
+
+
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MovieRVAdapter.ViewHolder {
         val binding: ItemMovieBinding = ItemMovieBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
 
@@ -19,15 +33,16 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
     override fun onBindViewHolder(holder: MovieRVAdapter.ViewHolder, position: Int) {
         val movieInfo = getItem(position) as MovieInfo
         holder.bind(movieInfo)
+        itemClickListener.clickMovie(holder, position)
     }
 
-    inner class ViewHolder(private val binding: ItemMovieBinding) :
+    inner class ViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movieInfo: MovieInfo) {
 //            parseAsHtml로 태그 제거
-            binding.itemMovieTitleTv.text = movieInfo.title.parseAsHtml()
-            binding.itemMovieReleaseTv.text = movieInfo.pubDate
-            binding.itemMovieRateTv.text = movieInfo.userRating
+            binding.itemMovieTitleTv2.text = movieInfo.title.parseAsHtml()
+            binding.itemMovieReleaseTv2.text = movieInfo.pubDate
+            binding.itemMovieRateTv2.text = movieInfo.userRating
             Glide.with(binding.itemMoviePosterIv).load(movieInfo.image).into(binding.itemMoviePosterIv)
         }
     }
