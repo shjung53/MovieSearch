@@ -16,27 +16,22 @@ class MovieSearchService {
     }
 
 
-    fun movieSearch(clientId:String, clientSecret:String, searchingText: ByteString){
-        val retrofit = Retrofit.Builder().baseUrl("https://openapi.naver.com").addConverterFactory(
+    fun movieSearch(clientId:String, clientSecret:String, searchingText: String){
+        val retrofit = Retrofit.Builder().baseUrl("https://openapi.naver.com/v1/").addConverterFactory(
             GsonConverterFactory.create()).build()
 
         val movieSearchService = retrofit.create(MovieSearchInterface::class.java)
 
         movieSearchService.getMovieInfo(clientId, clientSecret, searchingText).enqueue(object : Callback<MovieSearchResponse>{
-            override fun onResponse(call: Call<MovieSearchResponse>, movieSearchResponse: Response<MovieSearchResponse>
-            ) {
+            override fun onResponse(call: Call<MovieSearchResponse>, movieSearchResponse: Response<MovieSearchResponse>) {
                 Log.d("결과",movieSearchResponse.toString())
                 val response = movieSearchResponse.body()!!
-                when(response.code){
-                    200 -> movieSearchView.onMovieSearchSuccess(response.result)
-                    else -> movieSearchView.onMovieSearchFailure(response.code)
-                }
+                Log.d("결과",response.toString())
             }
 
             override fun onFailure(call: Call<MovieSearchResponse>, t: Throwable) {
-                movieSearchView.onMovieSearchFailure(400)
+                TODO("Not yet implemented")
             }
-
         })
     }
 
