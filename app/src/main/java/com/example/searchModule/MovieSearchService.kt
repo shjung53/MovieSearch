@@ -25,7 +25,6 @@ class MovieSearchService {
         movieSearchService.getMovieInfo(clientId, clientSecret, searchingText).enqueue(object : Callback<MovieSearchResponse>{
             override fun onResponse(call: Call<MovieSearchResponse>, movieSearchResponse: Response<MovieSearchResponse>) {
                 val response = movieSearchResponse.body()!!
-                Log.d("결과",response.toString())
                 when(movieSearchResponse.code()){
                     200 -> movieSearchView.onMovieSearchSuccess(response)
                     else -> movieSearchView.onMovieSearchFailure()

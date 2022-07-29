@@ -1,5 +1,6 @@
 package com.example.movieSearch
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,24 +19,25 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val movieInfo = ArrayList<MovieInfo>()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
         movieSearchService = MovieSearchService()
         movieSearchService.setMovieSearchView(this)
 
+//        네이버 api 아이디, 비번
         val clientId = "KvfkPaq5V52MCqyYYmUc"
         val clientSecret = "fnPfJB7Rwl"
 
+//        검색 클릭리스너
         binding.mainSearchBtn.setOnClickListener {
             val searchingText = binding.mainSearchEt.text.toString()
             movieSearchService.movieSearch(clientId, clientSecret, searchingText)
         }
 
-        movieRVAdapter = MovieRVAdapter(this,movieInfo)
+//        영화 어댑터
+        movieRVAdapter = MovieRVAdapter()
         binding.mainMoviesRv.adapter = movieRVAdapter
         binding.mainMoviesRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -43,7 +45,8 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 
     override fun onMovieSearchSuccess(result: MovieSearchResponse) {
         if(result.items != null){
-            movieRVAdapter.update(result.items!!)
+            Log.d("결과", result.items.toString())
+            movieRVAdapter.submitList(result.items!!)
         }else{
             Toast.makeText(this,"검색 결과가 없습니다",Toast.LENGTH_SHORT).show()
         }
