@@ -3,7 +3,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +42,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         binding.mainMoviesRv.adapter = movieRVAdapter
         binding.mainMoviesRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+//        영화 클릭시 브라우저 연결
         movieRVAdapter.setItemClickListener(object: MovieRVAdapter.ItemClickListener{
             override fun clickMovie(holder: MovieRVAdapter.ViewHolder, position: Int) {
                 holder.binding.itemMovieCl.setOnClickListener {
@@ -58,8 +58,8 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
     }
 
     override fun onMovieSearchSuccess(result: MovieSearchResponse) {
-        if(result.items != null){
-            Log.d("결과", result.items.toString())
+//        검색 결과가 없으면 null이 아니라 사이즈 0인 배열로 옴
+        if(result.items!!.size>0){
             movieRVAdapter.submitList(result.items!!)
         }else{
             Toast.makeText(this,"검색 결과가 없습니다",Toast.LENGTH_SHORT).show()
