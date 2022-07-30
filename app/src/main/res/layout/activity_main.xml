@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/main_searchBar_ll"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/top_bar_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="검색"
-            android:textSize="16sp"
+            android:textSize="@dimen/basic_font_size"
             android:textColor="@color/black"
             />
 <!--        최근 검색 버튼-->
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="최근검색"
-            android:textSize="16sp"
+            android:textSize="@dimen/basic_font_size"
             android:textColor="@color/black"
             />
     </LinearLayout>

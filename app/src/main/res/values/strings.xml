@@ -3,4 +3,5 @@
     <string name="title">제목 :</string>
     <string name="release">출시 :</string>
     <string name="rate">평점 :</string>
+    <string name="log">최근 검색 이력</string>
 </resources>
