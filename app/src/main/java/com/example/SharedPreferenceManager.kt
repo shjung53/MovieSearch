@@ -20,7 +20,7 @@ class SharedPreferenceManager(context: Context) {
     }
 
     //Json 형태의 String으로 꺼냄 (액티비티에서 배열로 전환 필요)
-    fun getSearchLog(): String {
+    fun getSearchLog(): String? {
         val log = spf.getString("log", "")
         return log!!
     }

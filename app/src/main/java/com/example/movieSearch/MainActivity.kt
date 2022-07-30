@@ -20,7 +20,6 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
     lateinit var  binding: ActivityMainBinding
     private lateinit var  movieSearchService: MovieSearchService
     private lateinit var movieRVAdapter: MovieRVAdapter
-    private lateinit var searchLogs: LinkedList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,21 +39,28 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         val gson = Gson()
         val queueType =  object : TypeToken<LinkedList<String>>() {}.type
         val log = sharedPreferenceManager.getSearchLog()
-        searchLogs = gson.fromJson(log, queueType)
+//        저장된 기록이 있으면 동기화 없으면 빈 queue
+        val searchLogs = if(log != ""){gson.fromJson(log, queueType)}else{
+            LinkedList<String>()
+        }
 
 //        검색 클릭리스너
         binding.mainSearchBtn.setOnClickListener {
             val searchingText = binding.mainSearchEt.text.toString()
+//            검색 기록 중복 확인
+            for(i in 0 until searchLogs.size){
+                if(searchLogs[i] == searchingText){
+                    searchLogs.removeAt(i)
+                    break
+                }
+            }
+//            검색기록 밀어내기
             if(searchLogs.size==10){
                 searchLogs.pop()
-                searchLogs.offer(searchingText)
-                sharedPreferenceManager.saveSearchLog(searchLogs)
-                Log.d("저장",gson.fromJson(log, queueType))
-            }else{
-                searchLogs.offer(searchingText)
-                sharedPreferenceManager.saveSearchLog(searchLogs)
-                Log.d("저장",searchLogs.toString())
             }
+//            저장
+            searchLogs.offer(searchingText)
+            sharedPreferenceManager.saveSearchLog(searchLogs)
             movieSearchService.movieSearch(clientId, clientSecret, searchingText)
         }
 
@@ -70,7 +76,6 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
                     val url = movieRVAdapter.currentList[position].link
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     startActivity(intent)
-                    Log.d("클릭",movieRVAdapter.currentList[position].link)
                 }
             }
 
