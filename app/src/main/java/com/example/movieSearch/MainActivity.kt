@@ -6,17 +6,21 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.SharedPreferenceManager
 import com.example.movieSearch.databinding.ActivityMainBinding
 import com.example.searchModule.MovieSearchResponse
 import com.example.searchModule.MovieSearchService
 import com.example.searchModule.MovieSearchView
-
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.util.*
 
 
 class MainActivity: AppCompatActivity(), MovieSearchView {
     lateinit var  binding: ActivityMainBinding
     private lateinit var  movieSearchService: MovieSearchService
     private lateinit var movieRVAdapter: MovieRVAdapter
+    private lateinit var searchLogs: LinkedList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +35,26 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         val clientId = "KvfkPaq5V52MCqyYYmUc"
         val clientSecret = "fnPfJB7Rwl"
 
+//        검색 기록 queue
+        val sharedPreferenceManager = SharedPreferenceManager(this)
+        val gson = Gson()
+        val queueType =  object : TypeToken<LinkedList<String>>() {}.type
+        val log = sharedPreferenceManager.getSearchLog()
+        searchLogs = gson.fromJson(log, queueType)
+
 //        검색 클릭리스너
         binding.mainSearchBtn.setOnClickListener {
             val searchingText = binding.mainSearchEt.text.toString()
+            if(searchLogs.size==10){
+                searchLogs.pop()
+                searchLogs.offer(searchingText)
+                sharedPreferenceManager.saveSearchLog(searchLogs)
+                Log.d("저장",gson.fromJson(log, queueType))
+            }else{
+                searchLogs.offer(searchingText)
+                sharedPreferenceManager.saveSearchLog(searchLogs)
+                Log.d("저장",searchLogs.toString())
+            }
             movieSearchService.movieSearch(clientId, clientSecret, searchingText)
         }
 
