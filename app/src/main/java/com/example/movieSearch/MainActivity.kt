@@ -2,7 +2,6 @@ package com.example.movieSearch
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +15,7 @@ import com.example.searchModule.MovieSearchView
 import java.util.*
 
 const val STRING_NULL = ""
+const val MAX_LOG_CNT = 10
 
 class MainActivity: AppCompatActivity(), MovieSearchView {
     private lateinit var binding: ActivityMainBinding
@@ -98,7 +98,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
             }
         }
         //            검색기록 밀어내기
-        if (searchLogs.size == 10) {
+        if (searchLogs.size == MAX_LOG_CNT) {
             searchLogs.pop()
         }
         //            검색기록 저장
