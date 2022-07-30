@@ -1,12 +1,10 @@
 package com.example.movieSearch
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieSearch.databinding.ItemLogBinding
-import java.util.*
 
 class LogRVAdapter() : ListAdapter<String, LogRVAdapter.ViewHolder>(diffUtil) {
 

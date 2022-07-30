@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.SharedPreferenceManager
 import com.example.movieSearch.databinding.ActivityLogBinding
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.util.*
 
 class LogActivity: AppCompatActivity() {
@@ -23,13 +21,7 @@ class LogActivity: AppCompatActivity() {
         binding.logRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val sharedPreferenceManager = SharedPreferenceManager(this)
-        val gson = Gson()
-        val queueType =  object : TypeToken<LinkedList<String>>() {}.type
-        val log = sharedPreferenceManager.getSearchLog()
-//        저장된 기록이 있으면 동기화 없으면 빈 queue
-        val searchLogs = if(log != ""){gson.fromJson(log, queueType)}else{
-            LinkedList<String>()
-        }
+        val searchLogs = sharedPreferenceManager.searchLogs
         logRVAdapter.submitList(searchLogs)
 
 
