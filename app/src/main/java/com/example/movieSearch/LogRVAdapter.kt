@@ -8,6 +8,16 @@ import com.example.movieSearch.databinding.ItemLogBinding
 
 class LogRVAdapter() : ListAdapter<String, LogRVAdapter.ViewHolder>(diffUtil) {
 
+    interface LogClickListener{
+        fun clickLog(holder:ViewHolder, position: Int)
+    }
+
+    private lateinit var logClickListener: LogClickListener
+
+    fun setLogClickListener(pLogClickListener: LogClickListener){
+        logClickListener = pLogClickListener
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemLogBinding =
             ItemLogBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -18,10 +28,12 @@ class LogRVAdapter() : ListAdapter<String, LogRVAdapter.ViewHolder>(diffUtil) {
     override fun onBindViewHolder(holder: LogRVAdapter.ViewHolder, position: Int) {
         val log = getItem(position) as String
         holder.bind(log)
+
+        logClickListener.clickLog(holder, position)
     }
 
 
-    inner class ViewHolder(private val binding: ItemLogBinding) :
+    inner class ViewHolder(val binding: ItemLogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(log: String) {
             binding.itemLogTv.text = log

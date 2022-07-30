@@ -2,6 +2,7 @@ package com.example.movieSearch
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,10 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
     lateinit var  binding: ActivityMainBinding
     private lateinit var  movieSearchService: MovieSearchService
     private lateinit var movieRVAdapter: MovieRVAdapter
+    private lateinit var searchingText: String
+    //        네이버 api 아이디, 비번
+    private val clientId = "KvfkPaq5V52MCqyYYmUc"
+    private val clientSecret = "fnPfJB7Rwl"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +33,6 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         movieSearchService = MovieSearchService()
         movieSearchService.setMovieSearchView(this)
 
-//        네이버 api 아이디, 비번
-        val clientId = "KvfkPaq5V52MCqyYYmUc"
-        val clientSecret = "fnPfJB7Rwl"
 
 //        검색 기록 queue
         val sharedPreferenceManager = SharedPreferenceManager(this)
@@ -38,7 +40,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 
 //        검색 클릭리스너
         binding.mainSearchBtn.setOnClickListener {
-            val searchingText = binding.mainSearchEt.text.toString()
+            searchingText = binding.mainSearchEt.text.toString()
 //            검색 기록 중복 확인
             for(i in 0 until searchLogs.size){
                 if(searchLogs[i] == searchingText){
@@ -61,6 +63,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         binding.mainSearchLogBtn.setOnClickListener {
             val intent = Intent(this, LogActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
 //        영화 어댑터
@@ -69,7 +72,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         binding.mainMoviesRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 //        영화 클릭시 브라우저 연결
-        movieRVAdapter.setItemClickListener(object: MovieRVAdapter.ItemClickListener{
+        movieRVAdapter.setItemClickListener(object: MovieRVAdapter.MovieClickListener{
             override fun clickMovie(holder: MovieRVAdapter.ViewHolder, position: Int) {
                 holder.binding.itemMovieCl.setOnClickListener {
                     val url = movieRVAdapter.currentList[position].link
@@ -77,7 +80,6 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
                     startActivity(intent)
                 }
             }
-
         })
 
     }

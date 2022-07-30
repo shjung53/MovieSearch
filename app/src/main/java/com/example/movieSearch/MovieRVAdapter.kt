@@ -12,14 +12,14 @@ import com.example.searchModule.MovieInfo
 
 class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUtil) {
 
-    interface ItemClickListener{
+    interface MovieClickListener{
         fun clickMovie(holder: ViewHolder, position: Int)
     }
 
-    private lateinit var itemClickListener: ItemClickListener
+    private lateinit var movieClickListener: MovieClickListener
 
-    fun setItemClickListener(pItemClickListener: ItemClickListener){
-        itemClickListener = pItemClickListener
+    fun setItemClickListener(pMovieClickListener: MovieClickListener){
+        movieClickListener = pMovieClickListener
     }
 
 
@@ -33,7 +33,8 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
     override fun onBindViewHolder(holder: MovieRVAdapter.ViewHolder, position: Int) {
         val movieInfo = getItem(position) as MovieInfo
         holder.bind(movieInfo)
-        itemClickListener.clickMovie(holder, position)
+
+        movieClickListener.clickMovie(holder, position)
     }
 
     inner class ViewHolder(val binding: ItemMovieBinding) :
