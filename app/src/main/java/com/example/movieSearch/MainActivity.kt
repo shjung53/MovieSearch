@@ -57,10 +57,17 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
             if(searchLogs.size==10){
                 searchLogs.pop()
             }
-//            저장
+//            검색기록 저장
             searchLogs.offer(searchingText)
             sharedPreferenceManager.saveSearchLog(searchLogs)
             movieSearchService.movieSearch(clientId, clientSecret, searchingText)
+        }
+
+
+//        검색기록 확인
+        binding.mainSearchLogBtn.setOnClickListener {
+            val intent = Intent(this, LogActivity::class.java)
+            startActivity(intent)
         }
 
 //        영화 어댑터
