@@ -4,6 +4,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.SharedPreferenceManager
@@ -20,9 +22,6 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
     private lateinit var  movieSearchService: MovieSearchService
     private lateinit var movieRVAdapter: MovieRVAdapter
     private lateinit var searchingText: String
-    //        네이버 api 아이디, 비번
-    private val clientId = "KvfkPaq5V52MCqyYYmUc"
-    private val clientSecret = "fnPfJB7Rwl"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +31,10 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 
         movieSearchService = MovieSearchService()
         movieSearchService.setMovieSearchView(this)
+
+//        네이버 id,pw
+        val clientId = "KvfkPaq5V52MCqyYYmUc"
+        val clientSecret = "fnPfJB7Rwl"
 
 
 //        검색 기록 queue
@@ -58,13 +61,24 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
             movieSearchService.movieSearch(clientId, clientSecret, searchingText)
         }
 
+//        LogActivity와 통신, 받아온 검색어로 검색
+        val searchWithLog: ActivityResultLauncher<Intent>  = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ){ result ->
+            if(result.resultCode == RESULT_OK){
+                searchingText = result.data?.getStringExtra(SEARCH_KEY).toString()
+                movieSearchService.movieSearch(clientId, clientSecret, searchingText)
+                binding.mainSearchEt.setText(searchingText)
+            }
+        }
+
 
 //        검색기록 확인
         binding.mainSearchLogBtn.setOnClickListener {
             val intent = Intent(this, LogActivity::class.java)
-            startActivity(intent)
-            finish()
+            searchWithLog.launch(intent)
         }
+
 
 //        영화 어댑터
         movieRVAdapter = MovieRVAdapter()
