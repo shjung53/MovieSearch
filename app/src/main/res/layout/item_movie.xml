@@ -10,8 +10,8 @@
 <!--    포스터-->
     <ImageView
         android:id="@+id/item_movie_poster_iv"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/movie_poster_size"
+        android:layout_height="@dimen/movie_poster_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="@id/item_movie_poster_iv"
         app:layout_constraintStart_toEndOf="@id/item_movie_poster_iv"
         app:layout_constraintBottom_toTopOf="@id/item_movie_release_tv"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/basic_margin"
         />
     <TextView
         android:id="@+id/item_movie_title_tv2"
@@ -34,8 +34,8 @@
         app:layout_constraintStart_toEndOf="@id/item_movie_title_tv"
         app:layout_constraintBottom_toBottomOf="@id/item_movie_title_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/basic_margin"
+        android:layout_marginStart="@dimen/small_margin"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
@@ -59,8 +59,8 @@
         app:layout_constraintStart_toEndOf="@id/item_movie_release_tv"
         app:layout_constraintBottom_toBottomOf="@id/item_movie_release_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/basic_margin"
+        android:layout_marginStart="@dimen/small_margin"
         />
 <!--    평점-->
     <TextView
@@ -80,8 +80,8 @@
         app:layout_constraintStart_toEndOf="@id/item_movie_rate_tv"
         app:layout_constraintBottom_toBottomOf="@id/item_movie_rate_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/basic_margin"
+        android:layout_marginStart="@dimen/small_margin"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

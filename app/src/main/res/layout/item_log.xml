@@ -10,9 +10,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/basic_margin"
         android:text="@string/log"
         android:textSize="@dimen/basic_font_size"
         android:padding="@dimen/basic_font_size"
+        android:background="@drawable/log_box"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
