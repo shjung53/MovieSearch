@@ -18,7 +18,7 @@ import java.util.*
 const val STRING_NULL = ""
 
 class MainActivity: AppCompatActivity(), MovieSearchView {
-    lateinit var  binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var  movieSearchService: MovieSearchService
     private lateinit var movieRVAdapter: MovieRVAdapter
     private lateinit var searchingText: String
@@ -44,20 +44,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 //        검색 클릭리스너
         binding.mainSearchBtn.setOnClickListener {
             searchingText = binding.mainSearchEt.text.toString()
-//            검색 기록 중복 확인
-            for(i in 0 until searchLogs.size){
-                if(searchLogs[i] == searchingText){
-                    searchLogs.removeAt(i)
-                    break
-                }
-            }
-//            검색기록 밀어내기
-            if(searchLogs.size==10){
-                searchLogs.pop()
-            }
-//            검색기록 저장
-            searchLogs.offer(searchingText)
-            sharedPreferenceManager.saveSearchLog(searchLogs)
+            updateSearchLog(searchLogs, sharedPreferenceManager)
             movieSearchService.movieSearch(clientId, clientSecret, searchingText)
         }
 
@@ -67,6 +54,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         ){ result ->
             if(result.resultCode == RESULT_OK){
                 searchingText = result.data?.getStringExtra(SEARCH_KEY).toString()
+                updateSearchLog(searchLogs, sharedPreferenceManager)
                 movieSearchService.movieSearch(clientId, clientSecret, searchingText)
                 binding.mainSearchEt.setText(searchingText)
             }
@@ -96,6 +84,26 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
             }
         })
 
+    }
+
+    private fun updateSearchLog(
+        searchLogs: LinkedList<String>,
+        sharedPreferenceManager: SharedPreferenceManager
+    ) {
+        //            검색 기록 중복 확인
+        for (i in 0 until searchLogs.size) {
+            if (searchLogs[i] == searchingText) {
+                searchLogs.removeAt(i)
+                break
+            }
+        }
+        //            검색기록 밀어내기
+        if (searchLogs.size == 10) {
+            searchLogs.pop()
+        }
+        //            검색기록 저장
+        searchLogs.offer(searchingText)
+        sharedPreferenceManager.saveSearchLog(searchLogs)
     }
 
     override fun onMovieSearchSuccess(result: MovieSearchResponse) {
