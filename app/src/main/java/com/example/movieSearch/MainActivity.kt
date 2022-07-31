@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.SharedPreferenceManager
 import com.example.movieSearch.databinding.ActivityMainBinding
@@ -16,12 +17,16 @@ import java.util.*
 
 const val STRING_NULL = ""
 const val MAX_LOG_CNT = 10
+const val NAVER_ID = "KvfkPaq5V52MCqyYYmUc"
+const val NAVER_PW = "fnPfJB7Rwl"
+
 
 class MainActivity: AppCompatActivity(), MovieSearchView {
     private lateinit var binding: ActivityMainBinding
     private lateinit var  movieSearchService: MovieSearchService
     private lateinit var movieRVAdapter: MovieRVAdapter
     private lateinit var searchingText: String
+    lateinit var searchViewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,23 +34,28 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+//        뷰모델 생성
+        searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+
+//        검색 api 서비스 세팅
         movieSearchService = MovieSearchService()
         movieSearchService.setMovieSearchView(this)
-
-//        네이버 id,pw
-        val clientId = "KvfkPaq5V52MCqyYYmUc"
-        val clientSecret = "fnPfJB7Rwl"
-
 
 //        검색 기록 queue
         val sharedPreferenceManager = SharedPreferenceManager(this)
         val searchLogs = sharedPreferenceManager.searchLogs
 
+//        영화 어댑터
+        movieRVAdapter = MovieRVAdapter()
+        binding.mainMoviesRv.adapter = movieRVAdapter
+        binding.mainMoviesRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
 //        검색 클릭리스너
         binding.mainSearchBtn.setOnClickListener {
             searchingText = binding.mainSearchEt.text.toString()
             updateSearchLog(searchLogs, sharedPreferenceManager)
-            movieSearchService.movieSearch(clientId, clientSecret, searchingText)
+            movieSearchService.movieSearch(NAVER_ID, NAVER_PW, searchingText)
         }
 
 //        LogActivity와 통신, 받아온 검색어로 검색
@@ -55,7 +65,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
             if(result.resultCode == RESULT_OK){
                 searchingText = result.data?.getStringExtra(SEARCH_KEY).toString()
                 updateSearchLog(searchLogs, sharedPreferenceManager)
-                movieSearchService.movieSearch(clientId, clientSecret, searchingText)
+                movieSearchService.movieSearch(NAVER_ID, NAVER_PW, searchingText)
                 binding.mainSearchEt.setText(searchingText)
             }
         }
@@ -67,12 +77,10 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
             searchWithLog.launch(intent)
         }
 
-
-//        영화 어댑터
-        movieRVAdapter = MovieRVAdapter()
-        binding.mainMoviesRv.adapter = movieRVAdapter
-        binding.mainMoviesRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
+        searchViewModel.movieList.observe(this){
+            val movieList = searchViewModel.movieList.value
+            movieRVAdapter.submitList(movieList)
+        }
 //        영화 클릭시 브라우저 연결
         movieRVAdapter.setItemClickListener(object: MovieRVAdapter.MovieClickListener{
             override fun clickMovie(holder: MovieRVAdapter.ViewHolder, position: Int) {
@@ -85,6 +93,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
         })
 
     }
+
 
     private fun updateSearchLog(
         searchLogs: LinkedList<String>,
