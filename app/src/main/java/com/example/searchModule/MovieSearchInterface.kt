@@ -10,6 +10,7 @@ interface MovieSearchInterface {
     fun getMovieInfo(
         @Header("X-Naver-Client-Id") clientId: String,
         @Header("X-Naver-Client-Secret") clientSecret: String,
-        @Query("query") searchingText: String
+        @Query("query") searchingText: String,
+        @Query("start") start: Int
     ): Call<MovieSearchResponse>
 }

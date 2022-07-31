@@ -14,4 +14,11 @@ class SearchViewModel: ViewModel() {
         _movieList.value = movieList
     }
 
+    private val _page = MutableLiveData<Int>()
+    val page : LiveData<Int> get() = _page
+
+    fun updatePage(page: Int){
+        _page.value = page
+    }
+
 }

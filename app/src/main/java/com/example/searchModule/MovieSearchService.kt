@@ -16,13 +16,13 @@ class MovieSearchService {
     }
 
 
-    fun movieSearch(clientId:String, clientSecret:String, searchingText: String){
+    fun movieSearch(clientId:String, clientSecret:String, searchingText: String, page: Int){
         val retrofit = Retrofit.Builder().baseUrl("https://openapi.naver.com/v1/").addConverterFactory(
             GsonConverterFactory.create()).build()
 
         val movieSearchService = retrofit.create(MovieSearchInterface::class.java)
 
-        movieSearchService.getMovieInfo(clientId, clientSecret, searchingText).enqueue(object : Callback<MovieSearchResponse>{
+        movieSearchService.getMovieInfo(clientId, clientSecret, searchingText, page).enqueue(object : Callback<MovieSearchResponse>{
             override fun onResponse(call: Call<MovieSearchResponse>, movieSearchResponse: Response<MovieSearchResponse>) {
                 val response = movieSearchResponse.body()!!
                 when(movieSearchResponse.code()){
