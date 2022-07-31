@@ -79,6 +79,7 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
                 val lastMoviePosition = movieRVAdapter.currentList.size - 1
                 val page = searchViewModel.page.value!!
                 if(lastVisibleMoviePosition == lastMoviePosition){
+                    Log.d("순서",page.toString())
                     movieSearchService.movieSearch(NAVER_ID, NAVER_PW, searchingText, page)
                 }
             }
@@ -145,10 +146,22 @@ class MainActivity: AppCompatActivity(), MovieSearchView {
 //        첫 페이지 검색이면 새로 담아주고 아니면 기존 리스트에 추가해서 업데이트
         if(searchViewModel.page.value == START_PAGE){
             searchViewModel.updateMovieList(result.items!!)
+            if(result.items!!.size==0){
+                Toast.makeText(this, "검색 결과가 없습니다",Toast.LENGTH_SHORT).show()
+            }
         }else{
             val movieList = searchViewModel.movieList.value!!
-            movieList.addAll(result.items!!)
+//          페이징이 넘어갔는데도 같은 목록이 불러오는 경우가 있음 그래서 비교가 필요함
+            if(movieList == result.items!!){
+                Toast.makeText(this, "검색 결과가 더 이상 없습니다",Toast.LENGTH_SHORT).show()
+            }else{
+                movieList.addAll(result.items!!)
+            }
+
             searchViewModel.updateMovieList(movieList)
+            if(result.items!!.size==0){
+                Toast.makeText(this, "검색 결과가 더 이상 없습니다",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
