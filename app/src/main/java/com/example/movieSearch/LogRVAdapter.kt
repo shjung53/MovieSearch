@@ -49,7 +49,7 @@ class LogRVAdapter() : ListAdapter<String, LogRVAdapter.ViewHolder>(diffUtil) {
                 return oldItem == newItem
             }
 
-            //            같은 내용인지 체크 위에서 ture로 통과하면 실행
+            //            같은 내용인지 체크 위에서 true로 통과하면 실행
             override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
                 return oldItem == newItem
             }

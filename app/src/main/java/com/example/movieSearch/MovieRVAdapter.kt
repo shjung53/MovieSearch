@@ -57,7 +57,7 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
                 return oldItem.title == newItem.title
             }
 
-//            같은 내용인지 체크 위에서 ture로 통과하면 실행
+//            같은 내용인지 체크 위에서 true로 통과하면 실행
             override fun areContentsTheSame(oldItem: MovieInfo, newItem: MovieInfo): Boolean {
                 return oldItem == newItem
             }
