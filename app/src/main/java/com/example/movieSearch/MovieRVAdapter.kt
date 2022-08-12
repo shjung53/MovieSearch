@@ -2,6 +2,7 @@ package com.example.movieSearch
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,7 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MovieRVAdapter.ViewHolder {
-        val binding: ItemMovieBinding = ItemMovieBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        val binding = DataBindingUtil.inflate<ItemMovieBinding>(LayoutInflater.from(viewGroup.context),R.layout.item_movie, viewGroup, false)
 
         return ViewHolder(binding)
     }
@@ -40,10 +41,10 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
     inner class ViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movieInfo: MovieInfo) {
-//            parseAsHtml로 태그 제거
-            binding.itemMovieTitleTv2.text = movieInfo.title.parseAsHtml()
-            binding.itemMovieReleaseTv2.text = movieInfo.pubDate
-            binding.itemMovieRateTv2.text = movieInfo.userRating
+//            parseAsHtml로 태그 제거\
+            binding.title = movieInfo.title.parseAsHtml().toString()
+            binding.release = movieInfo.pubDate
+            binding.rate = movieInfo.userRating
             Glide.with(binding.itemMoviePosterIv).load(movieInfo.image).into(binding.itemMoviePosterIv)
         }
     }

@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="release"
+            type="String" />
+        <variable
+            name="rate"
+            type="String" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/item_movie_cl"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,6 +51,7 @@
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
+        android:text="@{title}"
         />
 <!--    출시-->
     <TextView
@@ -61,6 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/basic_margin"
         android:layout_marginStart="@dimen/small_margin"
+        android:text="@{release}"
         />
 <!--    평점-->
     <TextView
@@ -82,6 +96,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/basic_margin"
         android:layout_marginStart="@dimen/small_margin"
+        android:text="@{rate}"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
