@@ -36,6 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+//   dataBinding annotation 사용
+    apply plugin: 'kotlin-kapt'
 }
 
 dependencies {

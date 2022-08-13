@@ -1,7 +1,9 @@
 package com.example.movieSearch
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.text.parseAsHtml
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -45,8 +47,13 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
             binding.title = movieInfo.title.parseAsHtml().toString()
             binding.release = movieInfo.pubDate
             binding.rate = movieInfo.userRating
-            Glide.with(binding.itemMoviePosterIv).load(movieInfo.image).into(binding.itemMoviePosterIv)
+            setImageResource(binding.itemMoviePosterIv, movieInfo.image)
         }
+    }
+
+    @BindingAdapter("movieImg")
+    fun setImageResource(v: ImageView, image: String){
+        Glide.with(v).load(image).into(v)
     }
 
 

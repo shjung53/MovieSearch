@@ -10,6 +10,9 @@
         <variable
             name="rate"
             type="String" />
+        <variable
+            name="movieImg"
+            type="String" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/item_movie_cl"
@@ -26,6 +29,7 @@
         android:layout_height="@dimen/movie_poster_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:movieImg="@{movieImg}"
         />
 <!--    제목-->
     <TextView
