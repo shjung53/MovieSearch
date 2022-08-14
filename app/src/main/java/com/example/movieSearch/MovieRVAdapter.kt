@@ -1,14 +1,11 @@
 package com.example.movieSearch
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.text.parseAsHtml
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.movieSearch.databinding.ItemMovieBinding
 import com.example.searchModule.MovieInfo
 
@@ -43,17 +40,11 @@ class MovieRVAdapter(): ListAdapter<MovieInfo, MovieRVAdapter.ViewHolder>(diffUt
     inner class ViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movieInfo: MovieInfo) {
-//            parseAsHtml로 태그 제거\
+//            parseAsHtml로 태그 제거
             binding.title = movieInfo.title.parseAsHtml().toString()
-            binding.release = movieInfo.pubDate
-            binding.rate = movieInfo.userRating
-            setImageResource(binding.itemMoviePosterIv, movieInfo.image)
+            binding.movieInfo = movieInfo
+            ImgBinding
         }
-    }
-
-    @BindingAdapter("movieImg")
-    fun setImageResource(v: ImageView, image: String){
-        Glide.with(v).load(image).into(v)
     }
 
 
